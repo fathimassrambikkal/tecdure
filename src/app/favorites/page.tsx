@@ -6,8 +6,7 @@ import ProductCard from "@/components/ui/ProductCard";
 import { products } from "@/data/products";
 import { useWishlistStore } from "@/store/wishlistStore";
 
-import { ArrowRightIcon, HeartIcon } from "@/components/icons/Icons";
-import { toast } from "@/components/ui/Toast";
+import { ArrowRightIcon } from "@/components/icons/Icons";
 
 export default function FavoritesPage() {
   const { favorites, toggleFavorite } = useWishlistStore();
@@ -16,29 +15,11 @@ export default function FavoritesPage() {
     favorites.includes(product.id)
   );
 
-  const showToast = (
-    type: "success" | "info",
-    title: string,
-    description: string
-  ) => {
-    if (toast && typeof toast[type] === "function") {
-      toast[type]({ title, description, duration: 3000 });
-    } else {
-      console.warn("toast module missing method:", type);
-    }
-  };
-
   const handleRemoveFromFavorites = (
     productName: string,
     productId: number
   ) => {
     toggleFavorite(productId);
-
-    showToast(
-      "info",
-      "Removed from Wishlist",
-      `"${productName}" has been removed from your wishlist`
-    );
   };
 
   return (
@@ -69,7 +50,7 @@ export default function FavoritesPage() {
           <div className="flex flex-col items-center justify-center py-16 xs:py-20 sm:py-28 md:py-40 px-2 text-center">
             <div className="relative">
               <div className="w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 rounded-full bg-gray-50 flex items-center justify-center mb-5 xs:mb-6">
-                <HeartIcon className="w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 text-gray-300" />
+                <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 text-gray-300" />
               </div>
               <div className="absolute -top-1 -right-1 w-5 h-5 xs:w-6 xs:h-6 rounded-full bg-gray-100 flex items-center justify-center">
                 <span className="text-[9px] xs:text-[10px] text-gray-400">0</span>
@@ -98,8 +79,6 @@ export default function FavoritesPage() {
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-3 xs:gap-4 sm:gap-6 lg:gap-8 2xl:gap-10">
           {favoriteProducts.map((product, index) => {
-            const isFav = favorites.includes(product.id);
-
             return (
               <div key={product.id} className="flex flex-col min-w-0">
                 <ProductCard
