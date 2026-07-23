@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { products } from "@/data/products";
+import { products, type Product } from "@/data/products";
 
 // Icons
-const SearchIcon = ({ className = "" }) => (
+const SearchIcon = ({ className = "" }: { className?: string }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -24,7 +24,7 @@ const SearchIcon = ({ className = "" }) => (
   </svg>
 );
 
-const CloseIcon = ({ className = "" }) => (
+const CloseIcon = ({ className = "" }: { className?: string }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -39,7 +39,7 @@ const CloseIcon = ({ className = "" }) => (
   </svg>
 );
 
-const ArrowRightIcon = ({ className = "" }) => (
+const ArrowRightIcon = ({ className = "" }: { className?: string }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -58,14 +58,26 @@ interface SearchOverlayProps {
   onClose: () => void;
 }
 
+// Type definitions
+interface Suggestion {
+  id: number;
+  name: string;
+  category: string;
+}
+
+interface Category {
+  name: string;
+  count: number;
+}
+
 export default function SearchOverlay({ onClose }: SearchOverlayProps) {
   const [closing, setClosing] = useState(false);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const inputRef = useRef(null);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Trending searches
   const trendingSearches = ["Abaya", "Dress", "Turbana"];
@@ -81,8 +93,8 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
       return;
     }
 
-    const results = products.filter(
-      (product) =>
+    const results: Product[] = products.filter(
+      (product: Product) =>
         product.name.toLowerCase().includes(query) ||
         product.category.toLowerCase().includes(query) ||
         (product.description && product.description.toLowerCase().includes(query))
@@ -90,10 +102,10 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
 
     setFilteredProducts(results);
 
-    const uniqueSuggestions = [];
-    const seenNames = new Set();
+    const uniqueSuggestions: Suggestion[] = [];
+    const seenNames = new Set<string>();
     
-    results.forEach((product) => {
+    results.forEach((product: Product) => {
       if (!seenNames.has(product.name)) {
         seenNames.add(product.name);
         uniqueSuggestions.push({
@@ -106,26 +118,28 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
     
     setSuggestions(uniqueSuggestions.slice(0, 8));
 
-    const uniqueCategories = [...new Set(results.map((p) => p.category))];
-    const categoriesWithCount = uniqueCategories.map((cat) => ({
+    const uniqueCategories: string[] = [
+      ...new Set(results.map((p: Product) => p.category)),
+    ];
+    const categoriesWithCount: Category[] = uniqueCategories.map((cat) => ({
       name: cat,
-      count: results.filter((p) => p.category === cat).length,
+      count: results.filter((p: Product) => p.category === cat).length,
     }));
     setCategories(categoriesWithCount);
   }, [searchQuery]);
 
   // Auto-focus input on mount
   useEffect(() => {
-    if (inputRef.current) {
-      setTimeout(() => {
-        inputRef.current.focus();
-      }, 400);
-    }
+    if (inputRef.current !== null) {
+  setTimeout(() => {
+    inputRef.current?.focus();
+  }, 400);
+}
   }, []);
 
   // Handle escape key
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         handleClose();
       }
@@ -136,25 +150,25 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const handleTrendingClick = (term) => {
+  const handleTrendingClick = (term: string) => {
     setSearchQuery(term);
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
 
-  const handleSuggestionClick = (productId) => {
+  const handleSuggestionClick = (productId: number) => {
     router.push(`/products/${productId}`);
   };
 
-  const handleProductClick = (productId) => {
+  const handleProductClick = (productId: number) => {
     router.push(`/products/${productId}`);
   };
 
   const handleClose = () => {
     setClosing(true);
     setTimeout(() => {
-      onClose(); // Changed from router.back() to onClose()
+      onClose();
     }, 700);
   };
 
@@ -182,7 +196,7 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
         {/* Header with Close */}
         <div className="flex justify-end mb-8 sm:mb-12">
           <button
-            onClick={handleClose} // Using handleClose instead of router.back()
+            onClick={handleClose}
             className="group flex items-center gap-2 text-xs tracking-[0.25em] uppercase text-black/60 hover:text-black transition-colors duration-300"
           >
             <span className="font-light">Close</span>
@@ -207,7 +221,9 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
               ref={inputRef}
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchQuery(e.target.value)
+              }
               placeholder="Search products..."
               className="w-full pl-12 pr-4 py-6 text-2xl sm:text-3xl md:text-4xl font-light text-black placeholder:text-black/20 bg-transparent border-b border-black/10 focus:border-black/40 outline-none transition-all duration-300"
               autoFocus

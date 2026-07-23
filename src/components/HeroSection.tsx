@@ -8,49 +8,81 @@ import {
   ArrowRightIcon,
 } from "@/components/icons/Icons";
 
+// Add interface above component
+interface Particle {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  y: number;
+  x: number;
+  scale: number;
+  duration: number;
+  delay: number;
+}
+
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [particles, setParticles] = useState<Particle[]>([]); // Add this state
   const heroRef = useRef<HTMLElement>(null);
-const slides = [
-  {
-    id: 1,
-    image: "/images/hero/hero1.jpg",
-    brand: "MAISON",
-    title: "Eternal Grace",
-    subtitle: "The Art of Modesty",
-    number: "01",
-    description: "Luxurious abayas crafted from the finest Italian crepe — where elegance meets effortless sophistication",
-    accent: "#C9A96E",
-    year: "2025",
-    collection: "Luxury Abaya Collection",
-  },
-  {
-    id: 2,
-    image: "/images/hero/hero2.webp",
-    brand: "ATELIER",
-    title: "Velvet Reverie",
-    subtitle: "Softness Reimagined",
-    number: "02",
-    description: "Plush velvet abayas that drape like a dream — a perfect blend of comfort and regal elegance",
-    accent: "#D4AF37",
-    year: "2025",
-    collection: "Velvet Abaya Edition",
-  },
-  {
-    id: 3,
-    image: "/images/hero/hero3.jpg",
-    brand: "ARCHIVE",
-    title: "Silk Whispers",
-    subtitle: "Fluidity in Motion",
-    number: "03",
-    description: "Pure silk abayas that flow with every movement — a celebration of feminine grace and refinement",
-    accent: "#C9A96E",
-    year: "2025",
-    collection: "Silk Abaya Capsule",
-  },
-];
+
+  const slides = [
+    {
+      id: 1,
+      image: "/images/hero/hero1.jpg",
+      brand: "MAISON",
+      title: "Eternal Grace",
+      subtitle: "The Art of Modesty",
+      number: "01",
+      description: "Luxurious abayas crafted from the finest Italian crepe — where elegance meets effortless sophistication",
+      accent: "#C9A96E",
+      year: "2025",
+      collection: "Luxury Abaya Collection",
+    },
+    {
+      id: 2,
+      image: "/images/hero/hero2.webp",
+      brand: "ATELIER",
+      title: "Velvet Reverie",
+      subtitle: "Softness Reimagined",
+      number: "02",
+      description: "Plush velvet abayas that drape like a dream — a perfect blend of comfort and regal elegance",
+      accent: "#D4AF37",
+      year: "2025",
+      collection: "Velvet Abaya Edition",
+    },
+    {
+      id: 3,
+      image: "/images/hero/hero3.jpg",
+      brand: "ARCHIVE",
+      title: "Silk Whispers",
+      subtitle: "Fluidity in Motion",
+      number: "03",
+      description: "Pure silk abayas that flow with every movement — a celebration of feminine grace and refinement",
+      accent: "#C9A96E",
+      year: "2025",
+      collection: "Silk Abaya Capsule",
+    },
+  ];
+
+  // Generate particles once after mount
+  useEffect(() => {
+    const generated = Array.from({ length: 20 }, () => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      width: 1 + Math.random() * 2,
+      height: 1 + Math.random() * 2,
+      y: -40 - Math.random() * 30,
+      x: (Math.random() - 0.5) * 60,
+      scale: 1 + Math.random() * 0.5,
+      duration: 4 + Math.random() * 3,
+      delay: Math.random() * 4,
+    }));
+
+    setParticles(generated);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -165,40 +197,36 @@ const slides = [
             {/* Sophisticated Gradients */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/70 via-transparent to-[#0A0A0A]/30" />
-            
-            {/* Diagonal Accent Lines - More Refined */}
-        
-        
           </motion.div>
         ))}
       </div>
 
-      {/* Floating Particles - Ultra Premium */}
+      {/* Floating Particles - Ultra Premium - REPLACED WITH FIXED VERSION */}
       <div className="absolute inset-0 pointer-events-none z-20">
-        {[...Array(20)].map((_, i) => (
+        {particles.map((particle, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
             initial={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
+              top: `${particle.top}%`,
+              left: `${particle.left}%`,
               opacity: 0,
             }}
             animate={{
               opacity: [0, 0.6, 0],
-              y: [0, -40 - Math.random() * 30, 0],
-              x: [0, (Math.random() - 0.5) * 60, 0],
-              scale: [0, 1 + Math.random() * 0.5, 0],
+              y: [0, particle.y, 0],
+              x: [0, particle.x, 0],
+              scale: [0, particle.scale, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
+              duration: particle.duration,
               repeat: Infinity,
-              delay: Math.random() * 4,
+              delay: particle.delay,
               ease: "easeOut",
             }}
             style={{
-              width: 1 + Math.random() * 2,
-              height: 1 + Math.random() * 2,
+              width: particle.width,
+              height: particle.height,
               background: `radial-gradient(circle, ${slides[currentSlide].accent}88, transparent 80%)`,
               boxShadow: `0 0 20px ${slides[currentSlide].accent}44`,
             }}
@@ -210,101 +238,100 @@ const slides = [
       <div className="absolute inset-0 flex flex-col justify-end px-8 md:px-20 lg:px-32 pb-16 md:pb-20 lg:pb-28 z-30">
         {/* Main Text Content */}
         <div className="relative mb-12 md:mb-16">
-         <AnimatePresence mode="wait">
-  {slides.map((slide, index) => (
-    index === currentSlide && (
-      <motion.div
-        key={slide.id}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.8 }}
-        className="space-y-5"
-      >
-      
-        {/* Main Title - Mask Reveal with Clip */}
-        <motion.h1
-          className="text-white font-light leading-[0.95]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <span className="block text-5xl md:text-6xl lg:text-8xl tracking-[0.02em]">
-            {slide.title.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                className="inline-block mr-4 overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 + i * 0.08 }}
-              >
-                <motion.span
-                  className="block"
-                  initial={{ y: 80, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ 
-                    delay: 0.3 + i * 0.08, 
-                    duration: 1.1,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
+          <AnimatePresence mode="wait">
+            {slides.map((slide, index) => (
+              index === currentSlide && (
+                <motion.div
+                  key={slide.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="space-y-5"
                 >
-                  {word}
-                </motion.span>
-              </motion.span>
-            ))}
-          </span>
-          <span className="block text-4xl md:text-5xl lg:text-7xl tracking-[0.05em] text-white/60 font-extralight mt-2">
-            {slide.subtitle.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                className="inline-block mr-3 overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.08 }}
-              >
-                <motion.span
-                  className="block"
-                  initial={{ y: 60, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ 
-                    delay: 0.5 + i * 0.08, 
-                    duration: 1,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                >
-                  {word}
-                </motion.span>
-              </motion.span>
-            ))}
-          </span>
-        </motion.h1>
+                  {/* Main Title - Mask Reveal with Clip */}
+                  <motion.h1
+                    className="text-white font-light leading-[0.95]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <span className="block text-5xl md:text-6xl lg:text-8xl tracking-[0.02em]">
+                      {slide.title.split(" ").map((word, i) => (
+                        <motion.span
+                          key={i}
+                          className="inline-block mr-4 overflow-hidden"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3 + i * 0.08 }}
+                        >
+                          <motion.span
+                            className="block"
+                            initial={{ y: 80, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ 
+                              delay: 0.3 + i * 0.08, 
+                              duration: 1.1,
+                              ease: [0.22, 1, 0.36, 1]
+                            }}
+                          >
+                            {word}
+                          </motion.span>
+                        </motion.span>
+                      ))}
+                    </span>
+                    <span className="block text-4xl md:text-5xl lg:text-7xl tracking-[0.05em] text-white/60 font-extralight mt-2">
+                      {slide.subtitle.split(" ").map((word, i) => (
+                        <motion.span
+                          key={i}
+                          className="inline-block mr-3 overflow-hidden"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 + i * 0.08 }}
+                        >
+                          <motion.span
+                            className="block"
+                            initial={{ y: 60, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ 
+                              delay: 0.5 + i * 0.08, 
+                              duration: 1,
+                              ease: [0.22, 1, 0.36, 1]
+                            }}
+                          >
+                            {word}
+                          </motion.span>
+                        </motion.span>
+                      ))}
+                    </span>
+                  </motion.h1>
 
-        {/* Description - Mask Reveal */}
-        <motion.div
-          className="flex items-start gap-6 max-w-xl overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-        >
-          <motion.div 
-            className="w-px h-12 bg-[#C9A96E]/40 mt-1"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-          />
-          <motion.p
-            className="text-white/40 text-sm md:text-base font-light leading-relaxed tracking-[0.08em]"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {slide.description}
-          </motion.p>
-        </motion.div>
-      </motion.div>
-    )
-  ))}
-</AnimatePresence>
+                  {/* Description - Mask Reveal */}
+                  <motion.div
+                    className="flex items-start gap-6 max-w-xl overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <motion.div 
+                      className="w-px h-12 bg-[#C9A96E]/40 mt-1"
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ delay: 0.8, duration: 0.8 }}
+                    />
+                    <motion.p
+                      className="text-white/40 text-sm md:text-base font-light leading-relaxed tracking-[0.08em]"
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {slide.description}
+                    </motion.p>
+                  </motion.div>
+                </motion.div>
+              )
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Preview Boxes - Ultra Premium Design */}
@@ -362,7 +389,6 @@ const slides = [
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-tr from-[#C9A96E]/0 via-[#C9A96E]/5 to-[#C9A96E]/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                   />
-
                 </motion.div>
               </motion.button>
             );
@@ -372,13 +398,6 @@ const slides = [
 
       {/* Navigation Controls - Refined */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-8">
-        {/* Slide Counter */}
-        <div className="flex items-center gap-3">
-      
-
-    
-        </div>
-
         {/* Progress Bar - Ultra Thin */}
         <div className="w-32 h-[1px] bg-white/5 relative">
           <motion.div
@@ -410,7 +429,7 @@ const slides = [
         whileTap={{ scale: 0.9 }}
       >
         <div className="w-14 h-14 rounded-full border border-white/5 backdrop-blur-md bg-white/5 flex items-center justify-center transition-all duration-700 hover:border-[#C9A96E]/30 hover:bg-white/10">
- <ArrowRightIcon className="w-4 h-4 text-white/20 group-hover:text-[#C9A96E]/60 transition-all duration-700" />
+          <ArrowRightIcon className="w-4 h-4 text-white/20 group-hover:text-[#C9A96E]/60 transition-all duration-700" />
         </div>
       </motion.button>
 
@@ -437,8 +456,6 @@ const slides = [
           }}
         />
       </motion.div>
-
-   
     </section>
   );
 }
