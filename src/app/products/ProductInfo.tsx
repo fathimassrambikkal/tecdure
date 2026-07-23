@@ -2,18 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import type { Product } from "@/data/products";
+
 
 interface ProductInfoProps {
-  product: {
-    id: number;
-    name: string;
-    category: string;
-    price: string;
-    description: string;
-    sizes: string[];
-    colors?: string[];
-    image: string;
-  };
+  product: Product;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {

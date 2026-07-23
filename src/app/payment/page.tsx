@@ -18,17 +18,10 @@ export default function PaymentPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [card, setCard] = useState({ cardNumber: "", expiry: "", cvv: "", nameOnCard: "" });
 
-  const subtotal = cart.reduce((sum, item) => {
-    let priceValue = item.price;
-    if (typeof priceValue === 'string') {
-      priceValue = parseFloat(priceValue.replace(/[^0-9.]/g, "")) || 0;
-    } else if (typeof priceValue === 'number') {
-      priceValue = priceValue;
-    } else {
-      priceValue = 0;
-    }
-    return sum + priceValue * item.quantity;
-  }, 0);
+ const subtotal = cart.reduce(
+  (sum, item) => sum + item.price * item.quantity,
+  0
+);
   const shippingCost = cart.length > 0 ? 25 : 0;
   const total = subtotal + shippingCost;
 
@@ -53,13 +46,9 @@ export default function PaymentPage() {
     }, 1500);
   };
 
-  const formatPrice = (price: string | number) => {
-    if (typeof price === 'number') {
-      return `QAR ${price.toFixed(2)}`;
-    }
-    const num = parseFloat(price.replace(/[^0-9.]/g, ""));
-    return isNaN(num) ? 'QAR 0.00' : `QAR ${num.toFixed(2)}`;
-  };
+  const formatPrice = (price: number) => {
+  return `QAR ${price.toFixed(2)}`;
+};
 
   if (cart.length === 0) {
     return (

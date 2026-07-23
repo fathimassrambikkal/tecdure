@@ -8,19 +8,12 @@ import {
   CheckIcon,
 } from "@/components/icons/Icons";
 
+import type { Product } from "@/data/products";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 
 interface ProductButtonProps {
-  product: {
-    id: number;
-    name: string;
-    category: string;
-    price: string;
-    description: string;
-    sizes: string[];
-    colors?: string[];
-  };
+  product: Product;
   onSizeGuideClick: () => void;
   onMeasurementsClick: () => void;
 }
