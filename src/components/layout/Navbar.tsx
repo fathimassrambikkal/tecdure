@@ -32,9 +32,13 @@ export default function Navbar() {
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  
+
   const langRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
+
+  // True only on the home page hero, before the user scrolls.
+  // This is the only state where the header is transparent with white text/icons.
+  const transparentHeader = isHomePage && !scrolled;
 
   // Handle scroll effect
   useEffect(() => {
@@ -62,12 +66,12 @@ export default function Navbar() {
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [open]);
 
@@ -78,7 +82,7 @@ export default function Navbar() {
     { href: "/contact", label: "CONTACT" },
   ];
 
-  const isActive = (href: string) => 
+  const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const toggleLanguage = (lang: string) => {
@@ -93,26 +97,35 @@ export default function Navbar() {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-700 ease-out bg-white border-b border-black/[0.06] ${
-          isHomePage && !scrolled ? "shadow-none" : "shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-700 ease-out ${
+          transparentHeader
+            ? "bg-transparent border-b border-transparent shadow-none"
+            : "bg-white border-b border-black/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
         }`}
       >
         <div className="max-w-[1024px] mx-auto flex items-center justify-between px-6 h-[72px] relative">
-          
           {/* LEFT SIDE - Mobile: Menu + Search */}
           <div className="flex items-center gap-3 md:hidden">
-            <button 
-              onClick={() => setOpen(true)} 
-              className="p-1.5 rounded-full hover:bg-black/5 transition-colors duration-300 relative group text-[#1a1a1a]"
+            <button
+              onClick={() => setOpen(true)}
+              className={`p-1.5 rounded-full transition-colors duration-300 relative group ${
+                transparentHeader
+                  ? "text-white hover:bg-white/10"
+                  : "text-[#1a1a1a] hover:bg-black/5"
+              }`}
               aria-label="Open menu"
             >
               <MenuIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-90" />
             </button>
-            
+
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-1.5 rounded-full hover:bg-black/5 transition-colors duration-300 group text-[#1a1a1a]"
+              className={`p-1.5 rounded-full transition-colors duration-300 group ${
+                transparentHeader
+                  ? "text-white hover:bg-white/10"
+                  : "text-[#1a1a1a] hover:bg-black/5"
+              }`}
               aria-label="Open search"
             >
               <SearchIcon className="w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-90" />
@@ -129,18 +142,22 @@ export default function Navbar() {
                 onMouseLeave={() => setHoveredLink(null)}
                 className="relative group"
               >
-                <span className={`text-[10px] font-normal uppercase tracking-[0.3em] transition-colors duration-300 ${
-                  isActive(link.href) 
-                    ? "text-[#C9A96E]" 
-                    : "text-[#1a1a1a]/80 hover:text-[#1a1a1a]"
-                }`}>
+                <span
+                  className={`text-[10px] font-normal uppercase tracking-[0.3em] transition-colors duration-300 ${
+                    isActive(link.href)
+                      ? "text-[#C9A96E]"
+                      : transparentHeader
+                      ? "text-white/80 hover:text-white"
+                      : "text-[#1a1a1a]/80 hover:text-[#1a1a1a]"
+                  }`}
+                >
                   {link.label}
                 </span>
-                
-                <span 
+
+                <span
                   className={`absolute -bottom-1 left-0 h-[1px] bg-gradient-to-r from-[#C9A96E] to-transparent transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] ${
                     isActive(link.href) || hoveredLink === link.href
-                      ? "w-full opacity-100" 
+                      ? "w-full opacity-100"
                       : "w-0 opacity-0"
                   }`}
                 />
@@ -150,8 +167,8 @@ export default function Navbar() {
 
           {/* LOGO */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="flex-shrink-0 transition-all duration-700 hover:opacity-80 group"
             >
               <div className="relative">
@@ -174,13 +191,17 @@ export default function Navbar() {
             <div className="relative hidden md:block" ref={langRef}>
               <button
                 onClick={() => setShowLangDropdown(!showLangDropdown)}
-                className="flex items-center gap-1.5 text-[10px] font-normal tracking-[0.2em] uppercase transition-colors duration-300 group text-[#1a1a1a]/80 hover:text-[#C9A96E]"
+                className={`flex items-center gap-1.5 text-[10px] font-normal tracking-[0.2em] uppercase transition-colors duration-300 group ${
+                  transparentHeader
+                    ? "text-white/80 hover:text-[#C9A96E]"
+                    : "text-[#1a1a1a]/80 hover:text-[#C9A96E]"
+                }`}
               >
                 <span>{language}</span>
                 <ChevronDownIcon
-                  className={`w-2.5 h-2.5 transition-transform duration-300 text-[#1a1a1a]/40 ${
-                    showLangDropdown ? "rotate-180" : "group-hover:rotate-180"
-                  }`}
+                  className={`w-2.5 h-2.5 transition-transform duration-300 ${
+                    transparentHeader ? "text-white/40" : "text-[#1a1a1a]/40"
+                  } ${showLangDropdown ? "rotate-180" : "group-hover:rotate-180"}`}
                 />
               </button>
               {showLangDropdown && (
@@ -190,8 +211,8 @@ export default function Navbar() {
                       key={lang}
                       onClick={() => toggleLanguage(lang)}
                       className={`w-full px-6 py-2.5 text-[10px] font-light tracking-[0.2em] uppercase transition-colors duration-300 ${
-                        language === lang 
-                          ? "text-[#C9A96E] bg-[#C9A96E]/10" 
+                        language === lang
+                          ? "text-[#C9A96E] bg-[#C9A96E]/10"
                           : "text-[#1a1a1a]/80 hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5"
                       }`}
                     >
@@ -206,13 +227,17 @@ export default function Navbar() {
             <div className="relative hidden md:block" ref={currencyRef}>
               <button
                 onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
-                className="flex items-center gap-1.5 text-[10px] font-normal tracking-[0.1em] transition-colors duration-300 group text-[#1a1a1a]/80 hover:text-[#C9A96E]"
+                className={`flex items-center gap-1.5 text-[10px] font-normal tracking-[0.1em] transition-colors duration-300 group ${
+                  transparentHeader
+                    ? "text-white/80 hover:text-[#C9A96E]"
+                    : "text-[#1a1a1a]/80 hover:text-[#C9A96E]"
+                }`}
               >
                 <span>{currency}</span>
                 <ChevronDownIcon
-                  className={`w-2.5 h-2.5 transition-transform duration-300 text-[#1a1a1a]/40 ${
-                    showCurrencyDropdown ? "rotate-180" : "group-hover:rotate-180"
-                  }`}
+                  className={`w-2.5 h-2.5 transition-transform duration-300 ${
+                    transparentHeader ? "text-white/40" : "text-[#1a1a1a]/40"
+                  } ${showCurrencyDropdown ? "rotate-180" : "group-hover:rotate-180"}`}
                 />
               </button>
               {showCurrencyDropdown && (
@@ -222,8 +247,8 @@ export default function Navbar() {
                       key={curr}
                       onClick={() => toggleCurrency(curr)}
                       className={`w-full px-6 py-2.5 text-[10px] font-light tracking-[0.1em] transition-colors duration-300 ${
-                        currency === curr 
-                          ? "text-[#C9A96E] bg-[#C9A96E]/10" 
+                        currency === curr
+                          ? "text-[#C9A96E] bg-[#C9A96E]/10"
                           : "text-[#1a1a1a]/80 hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5"
                       }`}
                     >
@@ -235,32 +260,54 @@ export default function Navbar() {
             </div>
 
             {/* Divider */}
-            <div className="hidden md:block w-px h-5 bg-[#1a1a1a]/10" />
+            <div
+              className={`hidden md:block w-px h-5 ${
+                transparentHeader ? "bg-white/20" : "bg-[#1a1a1a]/10"
+              }`}
+            />
 
             {/* Search - Desktop */}
             <div className="hidden md:block">
-              <button
-                onClick={() => setSearchOpen(true)}
-                className="relative group"
-              >
-                <div className="p-1.5 rounded-full hover:bg-[#1a1a1a]/5 transition-colors duration-300">
-                  <SearchIcon className="w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 text-[#1a1a1a]/80 group-hover:text-[#C9A96E]" />
+              <button onClick={() => setSearchOpen(true)} className="relative group">
+                <div
+                  className={`p-1.5 rounded-full transition-colors duration-300 ${
+                    transparentHeader ? "hover:bg-white/10" : "hover:bg-[#1a1a1a]/5"
+                  }`}
+                >
+                  <SearchIcon
+                    className={`w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 group-hover:text-[#C9A96E] ${
+                      transparentHeader ? "text-white/80" : "text-[#1a1a1a]/80"
+                    }`}
+                  />
                 </div>
               </button>
             </div>
 
             {/* Login */}
             <div className="hidden md:block">
-              <IconButton href="/signin" icon="user" />
+              <IconButton href="/signin" icon="user" transparentHeader={transparentHeader} />
             </div>
 
             {/* Favorites */}
-            <IconButton href="/favorites" icon="heart" badge={favorites.length} />
+            <IconButton
+              href="/favorites"
+              icon="heart"
+              badge={favorites.length}
+              transparentHeader={transparentHeader}
+            />
 
             {/* Cart */}
             <Link href="/cart" className="relative group">
-              <div className="p-1.5 rounded-full hover:bg-[#1a1a1a]/5 transition-colors duration-300">
-                <CartIcon className="w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 text-[#1a1a1a]/80 group-hover:text-[#C9A96E]" />
+              <div
+                className={`p-1.5 rounded-full transition-colors duration-300 ${
+                  transparentHeader ? "hover:bg-white/10" : "hover:bg-[#1a1a1a]/5"
+                }`}
+              >
+                <CartIcon
+                  className={`w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 group-hover:text-[#C9A96E] ${
+                    transparentHeader ? "text-white/80" : "text-[#1a1a1a]/80"
+                  }`}
+                />
               </div>
               {cart.length > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#C9A96E] text-white text-[8px] font-medium tracking-wide">
@@ -275,14 +322,14 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       {open && (
         <>
-          <div 
+          <div
             className="fixed inset-0 bg-black/50 z-40 md:hidden"
             onClick={() => setOpen(false)}
           />
-          
-          <div className="fixed top-0 left-0 h-full w-[300px] bg-white z-50 md:hidden shadow-2xl">
+
+          <div className="fixed top-0 left-0 h-full w-[300px] bg-white z-50 md:hidden shadow-2xl overflow-y-auto">
             <div className="flex justify-end p-4">
-              <button 
+              <button
                 onClick={() => setOpen(false)}
                 className="p-2 rounded-full hover:bg-black/5 transition-all duration-300 group"
                 aria-label="Close menu"
@@ -302,24 +349,24 @@ export default function Navbar() {
                     animationDelay: `${index * 100}ms`,
                   }}
                 >
-                  <span 
+                  <span
                     className={`block text-[28px] font-light tracking-[0.15em] transition-colors duration-300 ${
-                      isActive(link.href) 
-                        ? "text-[#C9A96E]" 
+                      isActive(link.href)
+                        ? "text-[#C9A96E]"
                         : "text-[#1a1a1a] hover:text-[#C9A96E]"
                     }`}
                   >
                     {link.label}
                   </span>
-                  
+
                   <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#C9A96E] to-transparent transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:w-full" />
                 </Link>
               ))}
             </div>
 
-            <div className="absolute bottom-8 left-0 right-0 px-8">
+            <div className="px-8 mt-10">
               <div className="flex flex-col gap-3 pt-6 border-t border-black/10">
-                <Link 
+                <Link
                   href="/signin"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 text-[13px] font-light text-[#1a1a1a] hover:text-[#C9A96E] transition-colors duration-300 py-2 group"
@@ -329,7 +376,9 @@ export default function Navbar() {
                 </Link>
 
                 <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-light text-black/40 uppercase tracking-[0.3em]">Language</span>
+                  <span className="text-[9px] font-light text-black/40 uppercase tracking-[0.3em]">
+                    Language
+                  </span>
                   <div className="flex gap-3">
                     {["EN", "AR"].map((lang) => (
                       <button
@@ -347,8 +396,10 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-light text-black/40 uppercase tracking-[0.3em]">Currency</span>
+                <div className="flex items-center gap-4 pb-8">
+                  <span className="text-[9px] font-light text-black/40 uppercase tracking-[0.3em]">
+                    Currency
+                  </span>
                   <div className="flex gap-3">
                     {["QAR", "SAR", "AED", "USD"].map((curr) => (
                       <button
@@ -377,30 +428,39 @@ export default function Navbar() {
 
       {/* Search Overlay */}
       <AnimatePresence>
-        {searchOpen && (
-          <SearchOverlay onClose={() => setSearchOpen(false)} />
-        )}
+        {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
       </AnimatePresence>
     </>
   );
 }
 
 // Reusable Icon Button Component
-function IconButton({ 
-  href, 
-  icon, 
-  badge = 0
-}: { 
-  href: string; 
-  icon: "search" | "heart" | "user"; 
+function IconButton({
+  href,
+  icon,
+  badge = 0,
+  transparentHeader = false,
+}: {
+  href: string;
+  icon: "search" | "heart" | "user";
   badge?: number;
+  transparentHeader?: boolean;
 }) {
-  const IconComponent = icon === "search" ? SearchIcon : icon === "heart" ? HeartIcon : UserIcon;
+  const IconComponent =
+    icon === "search" ? SearchIcon : icon === "heart" ? HeartIcon : UserIcon;
 
   return (
     <Link href={href} className="relative group">
-      <div className="p-1.5 rounded-full hover:bg-[#1a1a1a]/5 transition-colors duration-300">
-        <IconComponent className="w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 text-[#1a1a1a]/80 group-hover:text-[#C9A96E]" />
+      <div
+        className={`p-1.5 rounded-full transition-colors duration-300 ${
+          transparentHeader ? "hover:bg-white/10" : "hover:bg-[#1a1a1a]/5"
+        }`}
+      >
+        <IconComponent
+          className={`w-[17px] h-[17px] transition-transform duration-300 group-hover:scale-110 group-hover:text-[#C9A96E] ${
+            transparentHeader ? "text-white/80" : "text-[#1a1a1a]/80"
+          }`}
+        />
       </div>
       {badge > 0 && (
         <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#C9A96E] text-white text-[8px] font-medium tracking-wide">
