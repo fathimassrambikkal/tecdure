@@ -25,7 +25,7 @@ export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState<Particle[]>([]); // Add this state
+  const [particles, setParticles] = useState<Particle[]>([]);
   const heroRef = useRef<HTMLElement>(null);
 
   const slides = [
@@ -201,7 +201,7 @@ export default function HeroSection() {
         ))}
       </div>
 
-      {/* Floating Particles - Ultra Premium - REPLACED WITH FIXED VERSION */}
+      {/* Floating Particles - Ultra Premium */}
       <div className="absolute inset-0 pointer-events-none z-20">
         {particles.map((particle, i) => (
           <motion.div
@@ -249,14 +249,14 @@ export default function HeroSection() {
                   transition={{ duration: 0.8 }}
                   className="space-y-5"
                 >
-                  {/* Main Title - Mask Reveal with Clip */}
+                  {/* Main Title - Reduced font sizes for smaller screens */}
                   <motion.h1
                     className="text-white font-light leading-[0.95]"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
-                    <span className="block text-5xl md:text-6xl lg:text-8xl tracking-[0.02em]">
+                    <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-[0.02em]">
                       {slide.title.split(" ").map((word, i) => (
                         <motion.span
                           key={i}
@@ -280,7 +280,7 @@ export default function HeroSection() {
                         </motion.span>
                       ))}
                     </span>
-                    <span className="block text-4xl md:text-5xl lg:text-7xl tracking-[0.05em] text-white/60 font-extralight mt-2">
+                    <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-7xl tracking-[0.05em] text-white/60 font-extralight mt-2">
                       {slide.subtitle.split(" ").map((word, i) => (
                         <motion.span
                           key={i}
@@ -320,7 +320,7 @@ export default function HeroSection() {
                       transition={{ delay: 0.8, duration: 0.8 }}
                     />
                     <motion.p
-                      className="text-white/40 text-sm md:text-base font-light leading-relaxed tracking-[0.08em]"
+                      className="text-white/40 text-xs sm:text-sm md:text-base font-light leading-relaxed tracking-[0.08em]"
                       initial={{ y: 30, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}

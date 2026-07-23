@@ -39,29 +39,30 @@ const ProductScroll: React.FC = () => {
     <section className="w-full bg-white">
       <div className="w-full">
         {/* Category Title - Responsive */}
-        <div className="px-2 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8 lg:py-12 border-b border-black/10">
+        <div className="px-2 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8 lg:py-12 ">
           <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-light tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] text-black uppercase text-center">
             Abayas
           </h2>
         </div>
 
-        {/* Products Grid - Responsive columns */}
-        <div className="divide-y divide-black/10">
+        {/* Products Grid - with white gaps between cards */}
+        <div className="">
           {rows.map((row, rowIndex) => (
             <div 
               key={rowIndex} 
-              className="grid"
+              className="grid gap-2 sm:gap-3 md:gap-4 lg:gap-5"
               style={{
                 gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
               }}
             >
               {row.map((product, index) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  variant="scroll"
-                  index={index}
-                />
+                <div key={product.id} className="bg-white p-1 sm:p-2 md:p-3">
+                  <ProductCard 
+                    product={product} 
+                    variant="scroll"
+                    index={index}
+                  />
+                </div>
               ))}
             </div>
           ))}

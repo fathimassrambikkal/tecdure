@@ -106,7 +106,7 @@ export const products: Product[] = [
     slug: "abaya",
     category: "Abayas",
     name: "Shimmering Blue",
-    image: "/images/shimmeringblue1.jpg",
+    image: "/images/blue1.jpg",
     price: 230,
     description: "Shimmering blue abaya with luxurious finish.",
     sizes: ["S", "M", "L"],

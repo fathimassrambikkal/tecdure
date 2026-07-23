@@ -39,7 +39,7 @@ export default function Footer() {
               />
             </Link>
 
-            <p className="text-white/40 text-sm leading-relaxed font-light">
+            <p className="text-white text-sm leading-relaxed font-light">
               Ready to wear and made to order clothing brand with technology &
               fashion intertwined to create garments with purpose.
             </p>
@@ -47,15 +47,15 @@ export default function Footer() {
 
           {/* Terms & Policies */}
           <div>
-            <h4 className="text-white/90 text-[11px] font-light tracking-[0.25em] uppercase mb-5">
+            <h4 className="text-white text-[11px] font-light tracking-[0.25em] uppercase mb-5">
               Terms & Policies
             </h4>
 
-            <ul className="space-y-2.5 text-sm text-white/40 font-light">
+            <ul className="space-y-2.5 text-sm text-white font-light">
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   Privacy Policy
                 </Link>
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/return-policy"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   Return Policy
                 </Link>
@@ -73,7 +73,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms-of-service"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   Terms of Service
                 </Link>
@@ -82,7 +82,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/shipping-policy"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   Shipping Policy
                 </Link>
@@ -92,15 +92,15 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white/90 text-[11px] font-light tracking-[0.25em] uppercase mb-5">
+            <h4 className="text-white text-[11px] font-light tracking-[0.25em] uppercase mb-5">
               Quick Links
             </h4>
 
-            <ul className="space-y-2.5 text-sm text-white/40 font-light">
+            <ul className="space-y-2.5 text-sm text-white font-light">
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   About Us
                 </Link>
@@ -109,7 +109,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/account"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   My Account
                 </Link>
@@ -118,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/cart"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   My Cart
                 </Link>
@@ -127,7 +127,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/checkout"
-                  className="hover:text-white transition-colors duration-300"
+                  className="hover:text-white/70 transition-colors duration-300"
                 >
                   Checkout
                 </Link>
@@ -137,18 +137,17 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white/90 text-[11px] font-light tracking-[0.25em] uppercase mb-5">Contact</h4>
-            <p className="text-white/70">
-  <a
-    href="mailto:tecdure@gmail.com"
-    className="hover:text-white transition-colors duration-300"
-  >
-    tecdure@gmail.com
-  </a>
-</p>
-             
+            <h4 className="text-white text-[11px] font-light tracking-[0.25em] uppercase mb-5">Contact</h4>
+            <p className="text-white">
+              <a
+                href="mailto:tecdure@gmail.com"
+                className="hover:text-white/70 transition-colors duration-300"
+              >
+                tecdure@gmail.com
+              </a>
+            </p>
 
-            <p className="text-white/40 text-sm mt-2 font-light">
+            <p className="text-white text-sm mt-2 font-light">
               +974 5145 1588
             </p>
 
@@ -159,7 +158,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-1"
+                className="text-white hover:text-white/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <FaWhatsapp size={20} />
               </a>
@@ -169,7 +168,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-1"
+                className="text-white hover:text-white/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <FaInstagram size={20} />
               </a>
@@ -179,7 +178,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-1"
+                className="text-white hover:text-white/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <FaFacebookF size={18} />
               </a>
@@ -189,7 +188,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Snapchat"
-                className="text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-1"
+                className="text-white hover:text-white/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <FaSnapchatGhost size={20} />
               </a>
@@ -199,7 +198,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
-                className="text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-1"
+                className="text-white hover:text-white/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <FaTiktok size={18} />
               </a>
@@ -210,13 +209,13 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-white/10 pt-10 flex flex-col lg:flex-row items-center justify-between gap-6">
           {/* Copyright */}
-          <p className="text-sm text-white/40 font-light text-center lg:text-left tracking-wide">
+          <p className="text-sm text-white font-light text-center lg:text-left tracking-wide">
             © 2026 – tecdure. All Rights Reserved.
           </p>
 
           {/* Payment */}
           <div className="flex items-center gap-3">
-            <span className="text-white/40 text-xs uppercase tracking-[0.25em] hidden sm:block font-light">
+            <span className="text-white text-xs uppercase tracking-[0.25em] hidden sm:block font-light">
               Secure Payments
             </span>
 
